@@ -1,0 +1,36 @@
+ public class SessionStore : ISessionStore
+    {
+        private readonly HttpSessionStateBase _sessionWrapper;
+
+        public SessionStore()
+            : this(new HttpSessionStateWrapper(HttpContext.Current.Session))
+        { }
+
+        public SessionStore(HttpSessionStateBase sessionWrapper)
+        {
+            _sessionWrapper = sessionWrapper;
+        }
+
+        public void Save<T>(string key, T serializableObj)
+        {
+            _sessionWrapper.Add(key, serializableObj);
+        }
+
+        public T Get<T>(string key)
+        {
+            var r = _sessionWrapper[key];
+
+            if (r != null)
+            {
+                return (T)Convert.ChangeType(r, typeof(T));
+            }
+
+            return default(T);
+        }
+    }
+
+    public interface ISessionStore
+    {
+        void Save<T>(string key, T serializableObj);
+        T Get<T>(string key);
+    }
