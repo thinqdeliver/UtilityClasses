@@ -1,0 +1,182 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using System
+@using System.Linq
+@using System.Web.UI
+@using System.Web.UI.WebControls
+@using ClientManager.PersonalDetails.Controller
+@model ClientManager.Contracts.PersonalDetail
+
+@{
+    var referenceManager = new DAL();
+    var titles = referenceManager.Titles.Select(e => new SelectListItem
+    {
+        Value = e.TitleTypeID.ToString(),
+        Text = e.Name
+    });
+    var genders = referenceManager.Gender.Select(e => new SelectListItem
+    {
+        Value = e.GenderId.ToString(),
+        Text = e.Name
+    });
+    var martialStatuses = referenceManager.MaritalStatus.Select(e => new SelectListItem
+    {
+        Value = e.MaritalStatusID.ToString(),
+        Text = e.Name
+    });
+}
+
+
+<div class="form-group has-feedback">
+    <label class="col-xs-3 control-label" for="title">Title</label>
+    <div class="col-sm-5">
+        <div id="title-readonly" style="vertical-align: middle;">
+            @{
+                var rt = String.Empty;
+                var ct = titles.FirstOrDefault();
+                if (ct != null)
+                {
+                    rt = ct.Text;
+                }
+            }
+            @rt
+            <a class="edit" data-field="title" href="#"><i class=" fa fa-pencil"></i></a>
+
+        </div>
+        <div id="editor-for-title"  style = "display:none;">
+            @Html.DropDownListFor(m => m.Title, titles, "", new { @class = "form-control", })
+            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+            
+            <input/>    
+        </div>
+        
+    </div>
+    <div class="col-sm-4">
+        @Html.ValidationMessageFor(x => x.Title)
+    </div>
+
+</div>
+
+<div class="form-group">
+    <label class="col-sm-3 control-label" for="forename">Forename</label>
+    <div class="col-sm-5">
+        @Html.TextBoxFor(m => m.Forename, new { @class = "form-control", placeholder = "Forename" })
+        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+    </div>
+    <div class="col-sm-4">
+        @Html.ValidationMessageFor(x => x.Forename)
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label" for="middlename">Middle Name</label>
+    <div class="col-sm-5">
+        @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control", placeholder = "Middle Name" })
+        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+    </div>
+    <div class="col-sm-4">
+        @Html.ValidationMessageFor(x => x.MiddleName)
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-xs-3 control-label" for="surname">Surname</label>
+    <div class="col-sm-5">
+        @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", placeholder = "Surname" })
+        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+    </div>
+    <div class="col-sm-4">
+        @Html.ValidationMessageFor(x => x.Surname)
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-xs-3 control-label" for="known-as">KnownAs</label>
+    <div class="col-sm-5">
+        @Html.TextBoxFor(m => m.KnownAs, new { @class = "form-control", placeholder = "Known As" })
+        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+    </div>
+    <div class="col-sm-4">
+        @Html.ValidationMessageFor(x => x.KnownAs)
+    </div>
+</div>
+
+
+<div class="form-group">
+    <label class="col-xs-3 control-label" for="initials">Initials</label>
+    <div class="col-sm-5">
+        @Html.TextBoxFor(m => m.Initials, new { @class = "form-control", @readonly = "readonly" })
+        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+    </div>
+    <div class="col-sm-4">
+
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-xs-3 control-label" for="gender">Gender</label>
+    <div class="col-sm-5">
+        @Html.DropDownListFor(m => m.Gender, genders, "", new { @class = "form-control" })
+        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+    </div>
+    <div class="col-sm-4">
+        @Html.ValidationMessageFor(x => x.Gender)
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-xs-3 control-label" for="dobp">Date of Birth</label>
+    <div class="col-sm-5">
+        <div class="dateDropdownsWrapper input-group date">
+            @Html.TextBoxFor(m => m.Dob, new { @class = "form-control datepicker", type = "datetime", data_format=@"dd/mm/yyyy" })
+            <span class="input-group-addon">            
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        @Html.ValidationMessageFor(x => x.Dob)
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-xs-3 control-label" for="marital-status">Marital Status</label>
+    <div class="col-sm-5">
+        @Html.DropDownListFor(m => m.MaritalStatus, martialStatuses, "", new { @class = "form-control" })
+        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+    </div>
+    <div class="col-sm-4">
+        @Html.ValidationMessageFor(x => x.MaritalStatus)
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-xs-3 control-label" for="national-insurance-number">National Insurance Number</label>
+    <div class="col-sm-5">
+        @Html.TextBoxFor(m => m.NationalInsuranceNumber, new { @class = "form-control", placeholder = "National Insurance Number" })
+        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+    </div>
+    <div class="col-sm-4">
+        @Html.ValidationMessageFor(x => x.NationalInsuranceNumber)
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        $(document).ready(function() {
+            $('.datepicker').datetimepicker({
+                format: "DD/MMMM/YYYY"
+            });
+
+            $('input select').prop("readonly", true);
+
+            $('.edit').click(function() {
+                $(this).parent().css("display", "none");
+                var f = $(this).data("field");
+                $('#editor-for-' + f.trim()).css("display", "block");
+            });
+        });
+    </script>
+}
+
